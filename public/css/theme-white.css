@@ -1,0 +1,33 @@
+/* 主题：西式纯白 - 简约优雅 */
+:root{
+  --bg:#FFFFFF;
+  --bg-2:#F8F8FA;
+  --ink:#2C2C2E;
+  --ink-soft:#636366;
+  --ink-dim:#AEAEB2;
+  --accent:#8E8E93;
+  --accent-light:#C7C7CC;
+  --hand-color:#636366;
+  --line:rgba(142,142,147,.3);
+  --row-line:rgba(142,142,147,.1);
+  --card-bg:rgba(255,255,255,.9);
+  --input-bg:rgba(248,248,250,.9);
+  --icon-bg:#E5E5EA;
+  --btn-text:#FFF;
+  --petal:#E5E5EA;
+  --album-ph:linear-gradient(135deg,#E5E5EA,#F2F2F7);
+  --album-ph-text:rgba(142,142,147,.5);
+  --dot-off:rgba(142,142,147,.25);
+  --dot-glow:rgba(142,142,147,.35);
+  --glass:rgba(255,255,255,.7);
+  --cover-bg:url('/assets/hero-white.jpg');
+  --cover-scrim:linear-gradient(180deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.05) 40%,rgba(255,255,255,.5) 100%);
+  --screen-bg-1:linear-gradient(180deg,#FFFFFF 0%,#F8F8FA 100%);
+  --screen-bg-2:linear-gradient(180deg,#F8F8FA 0%,#FFFFFF 100%);
+  --stage-1:#F2F2F7;
+  --stage-2:#E5E5EA;
+  --frame:#FFFFFF;
+  --frame-2:#E5E5EA;
+  --halo-1:#E5E5EA;
+  --halo-2:#F2F2F7;
+}

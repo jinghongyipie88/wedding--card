@@ -1,0 +1,33 @@
+/* 主题：复古棕 - 怀旧温暖 */
+:root{
+  --bg:#F7F1E8;
+  --bg-2:#EDE3D4;
+  --ink:#3A2E22;
+  --ink-soft:#6B5A48;
+  --ink-dim:#9A8870;
+  --accent:#A0724A;
+  --accent-light:#D4B896;
+  --hand-color:#8B5A3C;
+  --line:rgba(160,114,74,.35);
+  --row-line:rgba(160,114,74,.12);
+  --card-bg:rgba(255,250,242,.8);
+  --input-bg:rgba(255,252,245,.9);
+  --icon-bg:#E0CFAE;
+  --btn-text:#FFF;
+  --petal:#E0CFAE;
+  --album-ph:linear-gradient(135deg,#E0CFAE,#D4B896);
+  --album-ph-text:rgba(255,255,255,.7);
+  --dot-off:rgba(160,114,74,.25);
+  --dot-glow:rgba(160,114,74,.4);
+  --glass:rgba(255,250,242,.65);
+  --cover-bg:url('/assets/hero-vintage.jpg');
+  --cover-scrim:linear-gradient(180deg,rgba(247,241,232,.3) 0%,rgba(247,241,232,.08) 40%,rgba(247,241,232,.6) 100%);
+  --screen-bg-1:linear-gradient(180deg,#F7F1E8 0%,#EDE3D4 100%);
+  --screen-bg-2:linear-gradient(180deg,#EDE3D4 0%,#F7F1E8 100%);
+  --stage-1:#F2EADB;
+  --stage-2:#E0D0B8;
+  --frame:#F7F1E8;
+  --frame-2:#D4B896;
+  --halo-1:#D4B896;
+  --halo-2:#E0CFAE;
+}

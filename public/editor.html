@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>制作婚礼邀请函</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#F5F2ED;color:#3D3530;min-height:100vh}
+.container{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+.header{text-align:center;padding:30px 0 24px}
+.header h1{font-size:24px;font-weight:600;margin-bottom:6px}
+.header p{font-size:13px;color:#8A8078}
+.card{background:#FFF;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.card h2{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h2::before{content:"";width:3px;height:16px;background:#C9A96E;border-radius:2px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:13px;color:#6B5F55;margin-bottom:6px}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;padding:11px 14px;border:1px solid #E0D8CE;border-radius:8px;
+  font-size:14px;background:#FAF8F5;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus{border-color:#C9A96E}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.theme-item{cursor:pointer;border:2px solid transparent;border-radius:8px;overflow:hidden;transition:all .2s}
+.theme-item.active{border-color:#C9A96E;box-shadow:0 0 0 2px rgba(201,169,110,.3)}
+.theme-item img{width:100%;aspect-ratio:9/16;object-fit:cover;display:block}
+.theme-item span{display:block;text-align:center;font-size:11px;padding:6px 0;color:#6B5F55;background:#FAF8F5}
+.story-item{background:#FAF8F5;border-radius:8px;padding:12px;margin-bottom:10px;position:relative}
+.story-item .row{display:grid;grid-template-columns:100px 1fr;gap:10px;margin-bottom:8px}
+.story-item input{padding:8px 10px;font-size:13px}
+.story-item .del{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
+  background:#E8E0D5;color:#8A8078;display:grid;place-items:center;font-size:14px;cursor:pointer;border:none}
+.add-story{width:100%;padding:10px;border:1px dashed #C9A96E;border-radius:8px;background:transparent;
+  color:#C9A96E;font-size:13px;cursor:pointer}
+.upload-area{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.upload-box{aspect-ratio:1;border:2px dashed #E0D8CE;border-radius:8px;display:grid;place-items:center;
+  cursor:pointer;background:#FAF8F5;position:relative;overflow:hidden}
+.upload-box img{width:100%;height:100%;object-fit:cover}
+.upload-box .plus{font-size:24px;color:#C9A96E}
+.upload-box .label{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#8A8078}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;
+  border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.1em;
+  box-shadow:0 4px 16px rgba(201,169,110,.4)}
+.submit-btn:active{transform:scale(.98)}
+.result{display:none;text-align:center;padding:30px 20px}
+.result.show{display:block}
+.result .icon{width:64px;height:64px;border-radius:50%;background:#E8F5E9;display:grid;place-items:center;margin:0 auto 16px}
+.result .icon svg{width:32px;height:32px;fill:#4CAF50}
+.result h3{font-size:20px;margin-bottom:8px}
+.result p{font-size:13px;color:#8A8078}
+.result .link-box{background:#FAF8F5;border-radius:8px;padding:12px;margin-bottom:12px;word-break:break-all}
+.result .link-box a{color:#C9A96E;font-size:13px;text-decoration:none}
+.result .actions{display:flex;gap:10px}
+.result .actions button{flex:1;padding:12px;border-radius:8px;font-size:14px;cursor:pointer;border:none}
+.result .actions .copy{background:#C9A96E;color:#FFF}
+.result .actions .preview{background:#F5F2ED;color:#6B5F55;border:1px solid #E0D8CE}
+.tips{background:#FFF8E1;border-radius:8px;padding:12px 16px;font-size:12px;color:#8D6E00;line-height:1.6;margin-bottom:16px}
+/* 解锁界面 */
+.unlock-wrap{display:block}
+.unlock-wrap.hide{display:none}
+.editor-wrap{display:none}
+.editor-wrap.show{display:block}
+.unlock-card{background:#FFF;border-radius:16px;padding:36px 28px;box-shadow:0 8px 32px rgba(0,0,0,.08);text-align:center}
+.unlock-card .icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(201,169,110,.18),rgba(212,165,165,.18));display:grid;place-items:center;margin:0 auto 18px;font-size:28px}
+.unlock-card h2{font-size:20px;font-weight:600;margin-bottom:6px}
+.unlock-card .sub{font-size:13px;color:#8A8078;margin-bottom:26px;line-height:1.7}
+.unlock-card .form-group input{text-align:center;font-size:16px;letter-spacing:.12em}
+.unlock-card .hint{font-size:12px;color:#9A8E82;margin-top:16px;line-height:1.7}
+/* 分享图 */
+.share-card-wrap{background:#FFF;border-radius:12px;padding:16px;margin-bottom:8px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.share-card-title{font-size:14px;font-weight:600;color:#3D3530;margin-bottom:12px;text-align:left}
+#shareCardImg{width:100%;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);margin-bottom:12px;display:block}
+.save-img-btn{width:100%;padding:12px;background:linear-gradient(135deg,#D4A5A5,#C9A96E);color:#FFF;
+  border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.save-img-btn:active{opacity:.85}
+.edit-badge{display:inline-block;background:#E8F5E9;color:#388E3C;border-radius:12px;padding:4px 12px;font-size:12px;margin-bottom:12px}
+.editing-tip{display:flex;align-items:center;justify-content:space-between;background:#FFF8E1;border-radius:8px;padding:10px 14px;font-size:12px;color:#8D6E00;margin-bottom:16px;line-height:1.6}
+.editing-tip .id{font-weight:600}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>制作婚礼邀请函</h1>
+    <p>填写信息，生成专属电子请柬</p>
+  </div>
+
+  <!-- ═══ 解锁界面（未持有解锁码时显示）═══ -->
+  <div class="unlock-wrap" id="unlockWrap">
+    <div class="unlock-card">
+      <div class="icon">🔐</div>
+      <h2>请输入邀请函编号和编辑码</h2>
+      <p class="sub">付款后收到的编辑链接已自动带入编号和编辑码<br>如果打开的是空白页，请手动输入下方两项</p>
+      <div class="form-group">
+        <label>邀请函编号</label>
+        <input type="text" id="unlockId" placeholder="例如 2230ad22">
+      </div>
+      <div class="form-group">
+        <label>编辑码</label>
+        <input type="text" id="unlockCode" placeholder="6位编辑码">
+      </div>
+      <button class="submit-btn" id="unlockBtn">开始编辑 →</button>
+      <p class="hint">编辑码在哪里？付款后微信收到的「编辑链接」里已经包含编号和编辑码，直接点开即可，无需手动输入。</p>
+    </div>
+  </div>
+
+  <!-- ═══ 编辑界面（解锁后显示）═══ -->
+  <div class="editor-wrap" id="editorWrap">
+    <div class="editing-tip">
+      <span>正在编辑：<span class="id" id="editIdLabel">--</span></span>
+      <span>保存后即可发给亲友</span>
+    </div>
+
+    <div class="tips">
+      提示：填好后点「保存并生成邀请函」，会得到「分享封面图」+「邀请函链接」。发微信时推荐直接发封面图，更有仪式感。
+    </div>
+
+    <!-- 基本信息 -->
+    <div class="card">
+      <h2>基本信息</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>新郎姓名</label>
+          <input type="text" id="groom" placeholder="新郎姓名">
+        </div>
+        <div class="form-group">
+          <label>新娘姓名</label>
+          <input type="text" id="bride" placeholder="新娘姓名">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>婚礼日期时间</label>
+        <input type="datetime-local" id="date">
+      </div>
+      <div class="form-group">
+        <label>婚礼地点</label>
+        <input type="text" id="location" placeholder="详细地址">
+      </div>
+    </div>
+
+    <!-- 选择主题 -->
+    <div class="card">
+      <h2>选择主题风格</h2>
+      <div class="theme-grid" id="themeGrid">
+        <div class="theme-item active" data-theme="champagne">
+          <img src="/assets/hero-champagne.jpg" alt="香槟金">
+          <span>香槟金</span>
+        </div>
+        <div class="theme-item" data-theme="chinese">
+          <img src="/assets/hero-chinese.jpg" alt="中式红">
+          <span>中式红</span>
+        </div>
+        <div class="theme-item" data-theme="white">
+          <img src="/assets/hero-white.jpg" alt="西式白">
+          <span>西式白</span>
+        </div>
+        <div class="theme-item" data-theme="forest">
+          <img src="/assets/hero-forest.jpg" alt="森系绿">
+          <span>森系绿</span>
+        </div>
+        <div class="theme-item" data-theme="vintage">
+          <img src="/assets/hero-vintage.jpg" alt="复古棕">
+          <span>复古棕</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 爱情故事 -->
+    <div class="card">
+      <h2>爱情故事（可选）</h2>
+      <div id="storyList"></div>
+      <button class="add-story" id="addStory">+ 添加故事节点</button>
+    </div>
+
+    <!-- 照片上传 -->
+    <div class="card">
+      <h2>照片上传（可选）</h2>
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-box" data-idx="0">
+          <span class="plus">+</span>
+          <span class="label">封面</span>
+        </div>
+        <div class="upload-box" data-idx="1">
+          <span class="plus">+</span>
+          <span class="label">相册1</span>
+        </div>
+        <div class="upload-box" data-idx="2">
+          <span class="plus">+</span>
+          <span class="label">相册2</span>
+        </div>
+        <div class="upload-box" data-idx="3">
+          <span class="plus">+</span>
+          <span class="label">相册3</span>
+        </div>
+        <div class="upload-box" data-idx="4">
+          <span class="plus">+</span>
+          <span class="label">相册4</span>
+        </div>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none">
+    </div>
+
+    <button class="submit-btn" id="submitBtn">保存并生成邀请函</button>
+
+    <!-- 生成结果 -->
+    <div class="result" id="result">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+      <h3>邀请函保存成功！</h3>
+      <p style="margin-bottom:16px">保存下方分享图，发到微信/朋友圈更有仪式感</p>
+
+      <!-- 分享封面图 -->
+      <div class="share-card-wrap">
+        <div class="share-card-title">📸 微信分享封面图</div>
+        <img id="shareCardImg" src="" alt="分享封面图">
+        <button class="save-img-btn" id="saveImgBtn">💾 保存封面图到手机</button>
+        <p style="font-size:11px;color:#9A8E82;margin-top:8px;text-align:center">长按图片也可保存，发微信时直接发这张图</p>
+      </div>
+
+      <div class="link-box" style="margin-top:16px"><a id="inviteLink" href="#" target="_blank"></a></div>
+      <div class="actions">
+        <button class="copy" id="copyBtn">复制链接</button>
+        <button class="preview" id="previewBtn">预览效果</button>
+      </div>
+      <p style="font-size:12px;color:#9A8E82;margin-top:14px">这份链接就是发给亲友的邀请函地址；以后想改信息，继续用编辑链接进来改即可。</p>
+    </div>
+  </div>
+</div>
+
+<script src="/js/qrcode.min.js"></script>
+<script src="/js/share-card.js"></script>
+<script>
+let selectedTheme = 'champagne';
+let photos = ['', '', '', '', ''];
+let currentUploadIdx = 0;
+let lastInviteData = null;
+let editId = '';
+let editCode = '';
+
+/* ── 解析 URL：id + code（编辑链接自动带入）── */
+const params = new URLSearchParams(window.location.search);
+editId = (params.get('id') || '').trim();
+editCode = (params.get('code') || '').trim();
+
+/* ── 主题选择 ── */
+document.querySelectorAll('.theme-item').forEach(item => {
+  item.onclick = () => {
+    document.querySelectorAll('.theme-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    selectedTheme = item.dataset.theme;
+  };
+});
+
+/* ── 故事节点 ── */
+let storyData = [];
+function renderStory(list) {
+  const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  document.getElementById('storyList').innerHTML = list.map((s, i) => `
+    <div class="story-item">
+      <button class="del" onclick="delStory(${i})">×</button>
+      <div class="row">
+        <input type="text" placeholder="时间" value="${esc(s.date)}" onchange="updateStory(${i},'date',this.value)">
+        <input type="text" placeholder="标题" value="${esc(s.title)}" onchange="updateStory(${i},'title',this.value)">
+      </div>
+      <input type="text" placeholder="描述" value="${esc(s.desc)}" style="width:100%" onchange="updateStory(${i},'desc',this.value)">
+    </div>
+  `).join('');
+}
+window.updateStory = (i, field, val) => { storyData[i][field] = val; };
+window.delStory = (i) => { storyData.splice(i, 1); renderStory(storyData); };
+document.getElementById('addStory').onclick = () => {
+  storyData.push({date:'', title:'', desc:''});
+  renderStory(storyData);
+};
+
+/* ── 照片上传 ── */
+document.querySelectorAll('.upload-box').forEach(box => {
+  box.onclick = () => {
+    currentUploadIdx = +box.dataset.idx;
+    document.getElementById('fileInput').click();
+  };
+});
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const maxW = currentUploadIdx === 0 ? 1080 : 800;
+      let w = img.width, h = img.height;
+      if (w > maxW) { h = h * maxW / w; w = maxW; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      photos[currentUploadIdx] = canvas.toDataURL('image/jpeg', 0.7);
+      document.querySelector(`.upload-box[data-idx="${currentUploadIdx}"]`).innerHTML =
+        `<img src="${photos[currentUploadIdx]}" alt="">`;
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+};
+
+/* ── 解锁：验证并进入编辑 ── */
+async function unlockEnter(id, code) {
+  if (!id || !code) { alert('请输入邀请函编号和编辑码'); return; }
+  // 先确认邀请函存在
+  try {
+    const res = await fetch(`/api/invites/${encodeURIComponent(id)}`);
+    if (res.status === 404) { alert('未找到这份邀请函，请核对编号'); return; }
+    if (!res.ok) { alert('网络异常，请稍后重试'); return; }
+    const invite = await res.json();
+    enterEditor(id, code, invite);
+  } catch (e) {
+    alert('网络异常，请稍后重试');
+  }
+}
+
+/* ── 进入编辑模式 ── */
+function enterEditor(id, code, invite) {
+  editId = id;
+  editCode = code;
+  document.getElementById('unlockWrap').classList.add('hide');
+  document.getElementById('editorWrap').classList.add('show');
+  document.getElementById('editIdLabel').textContent = id;
+
+  // 回填基本信息
+  document.getElementById('groom').value = invite.groom || '';
+  document.getElementById('bride').value = invite.bride || '';
+  document.getElementById('date').value = invite.date || '';
+  document.getElementById('location').value = invite.location || '';
+
+  // 主题
+  if (invite.theme) {
+    document.querySelectorAll('.theme-item').forEach(i => i.classList.remove('active'));
+    const t = document.querySelector(`.theme-item[data-theme="${invite.theme}"]`);
+    if (t) t.classList.add('active');
+    selectedTheme = invite.theme;
+  }
+
+  // 故事（空则从空开始，客户自己写）
+  storyData = Array.isArray(invite.story) && invite.story.length ? JSON.parse(JSON.stringify(invite.story)) : [];
+  renderStory(storyData);
+
+  // 照片回显
+  photos = ['', '', '', '', ''];
+  if (invite.coverImage) photos[0] = invite.coverImage;
+  if (Array.isArray(invite.photos)) {
+    invite.photos.slice(0, 4).forEach((p, i) => { photos[i + 1] = p; });
+  }
+  document.querySelectorAll('.upload-box').forEach((box, idx) => {
+    if (photos[idx]) {
+      box.innerHTML = `<img src="${photos[idx]}" alt="">`;
+    }
+  });
+
+  window.scrollTo(0, 0);
+}
+
+/* ── 保存（PUT，带解锁码）── */
+document.getElementById('submitBtn').onclick = async () => {
+  if (!editId || !editCode) { alert('会话已过期，请重新打开编辑链接'); return; }
+  const groom = document.getElementById('groom').value.trim();
+  const bride = document.getElementById('bride').value.trim();
+  const date = document.getElementById('date').value;
+  const location = document.getElementById('location').value.trim();
+  if (!groom || !bride) { alert('请填写新人姓名'); return; }
+  if (!date) { alert('请选择婚礼日期'); return; }
+  if (!location) { alert('请填写婚礼地点'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '保存中...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`/api/invites/${editId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        groom, bride, date, location,
+        theme: selectedTheme,
+        story: storyData.filter(s => s.title || s.desc),
+        coverImage: photos[0],
+        photos: photos.slice(1).filter(p => p),
+        unlockCode: editCode
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      lastInviteData = { groom, bride, date, location, theme: selectedTheme };
+      const url = `${window.location.origin}/invite/${editId}`;
+      document.getElementById('inviteLink').href = url;
+      document.getElementById('inviteLink').textContent = url;
+      document.getElementById('result').classList.add('show');
+      // 生成分享封面图（含真实二维码指向邀请函链接）
+      generateShareCard({ ...lastInviteData, link: url }, dataUrl => {
+        document.getElementById('shareCardImg').src = dataUrl;
+      });
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      alert('保存失败：' + (data.error || '未知错误，请检查编辑码是否正确'));
+    }
+  } catch (e) {
+    alert('保存失败，请检查网络连接');
+  } finally {
+    btn.textContent = '保存并生成邀请函';
+    btn.disabled = false;
+  }
+};
+
+/* ── 解锁按钮 ── */
+document.getElementById('unlockBtn').onclick = () => {
+  unlockEnter(document.getElementById('unlockId').value.trim(),
+              document.getElementById('unlockCode').value.trim());
+};
+
+/* ── 保存分享图 ── */
+document.getElementById('saveImgBtn').onclick = () => {
+  const img = document.getElementById('shareCardImg');
+  if (!img.src) return;
+  const a = document.createElement('a');
+  a.href = img.src;
+  a.download = `婚礼邀请函_${lastInviteData ? lastInviteData.groom + lastInviteData.bride : '分享图'}.jpg`;
+  a.click();
+};
+
+/* ── 复制链接 ── */
+document.getElementById('copyBtn').onclick = () => {
+  const link = document.getElementById('inviteLink').href;
+  const done = () => {
+    document.getElementById('copyBtn').textContent = '已复制！';
+    setTimeout(() => document.getElementById('copyBtn').textContent = '复制链接', 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(done).catch(() => fallbackCopy(link, done));
+  } else {
+    fallbackCopy(link, done);
+  }
+};
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动长按链接复制'); }
+  ta.remove();
+}
+
+/* ── 预览 ── */
+document.getElementById('previewBtn').onclick = () => {
+  const link = document.getElementById('inviteLink').href;
+  if (!link || link === '#') { alert('请先保存邀请函'); return; }
+  // 记住当前编辑链接，预览页点「返回编辑」可回到编辑状态
+  sessionStorage.setItem('editReturn', window.location.href);
+  window.open(link + '?from=editor', '_blank');
+};
+
+/* ── 初始化：编辑链接已带 id+code 则直接解锁 ── */
+if (editId && editCode) {
+  unlockEnter(editId, editCode);
+} else {
+  // 空白页显示解锁界面
+  document.getElementById('unlockWrap').classList.remove('hide');
+}
+</script>
+</body>
+</html>

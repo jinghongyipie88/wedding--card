@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#FAF6F0">
+<title>婚礼邀请函</title>
+<meta property="og:title" content="婚礼邀请函">
+<meta property="og:description" content="诚邀您见证我们的幸福时刻">
+<link rel="stylesheet" href="/css/base.css">
+<link id="themeCss" rel="stylesheet" href="/css/theme-champagne.css">
+<style>
+/* 分享图弹窗 */
+.share-card-modal{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.85);display:none;
+  flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.share-card-modal.show{display:flex}
+.share-card-modal img{max-width:100%;max-height:70vh;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.4);margin-bottom:16px}
+.share-card-modal .tips{color:rgba(255,255,255,.8);font-size:13px;text-align:center;margin-bottom:16px;line-height:1.6}
+.share-card-modal .actions{display:flex;gap:12px}
+.share-card-modal .actions button{padding:12px 24px;border-radius:8px;font-size:14px;cursor:pointer;border:none;font-weight:600}
+.share-card-modal .save{background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF}
+.share-card-modal .close-btn{background:rgba(255,255,255,.15);color:#FFF}
+/* 返回编辑浮动按钮（仅从编辑器预览时显示） */
+.back-edit-btn{position:fixed;top:12px;left:12px;z-index:110;display:none;
+  align-items:center;gap:6px;padding:8px 14px;border-radius:20px;
+  background:rgba(0,0,0,.55);color:#FFF;font-size:13px;border:none;cursor:pointer;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.back-edit-btn.show{display:flex}
+.back-edit-btn svg{width:14px;height:14px;fill:currentColor}
+</style>
+</head>
+<body>
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>正在加载邀请函...</p>
+</div>
+
+<!-- 返回编辑按钮（仅预览时显示） -->
+<button class="back-edit-btn" id="backEditBtn">
+  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  返回编辑
+</button>
+
+<div class="stage"><div id="app">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span id="sbTime">18:00</span>
+    <span class="sb-r"><i class="sig"></i><i class="wifi"></i><i class="bat"></i></span>
+  </div>
+
+  <div class="dot-nav" id="dotNav"></div>
+
+  <div id="deck">
+    <!-- 1.封面 -->
+    <section class="screen" id="s1">
+      <div class="art" id="heroArt"></div>
+      <div class="scrim"></div>
+      <div class="petals" id="petals"></div>
+      <div class="content">
+        <div class="ornament an"></div>
+        <div class="kicker an">WEDDING INVITATION</div>
+        <div class="names an"><span id="groomName">新郎</span><span class="amp">&</span><span id="brideName">新娘</span></div>
+        <div class="sub an">我们结婚啦</div>
+        <div class="date-box an">
+          <div class="d" id="coverDay">01</div>
+          <div class="m-y"><div id="coverMonth">OCT</div><div id="coverYear">2026</div></div>
+        </div>
+        <div class="location an" id="coverLoc">婚礼地点</div>
+      </div>
+      <div class="scroll-hint"><span>向下滑动</span><div class="arrow"></div></div>
+    </section>
+
+    <!-- 2.倒计时 -->
+    <section class="screen" id="s2">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">COUNTDOWN</div>
+          <h2>距离婚礼还有</h2>
+          <div class="line"></div>
+        </div>
+        <div class="countdown an">
+          <div class="cd-unit"><div class="cd-num" id="cdDays">00</div><div class="cd-label">天</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cdHours">00</div><div class="cd-label">时</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cdMins">00</div><div class="cd-label">分</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cdSecs">00</div><div class="cd-label">秒</div></div>
+        </div>
+        <div class="countdown-msg an">每一分每一秒<br>都在期待与您相见的那一刻</div>
+      </div>
+    </section>
+
+    <!-- 3.我们的故事 -->
+    <section class="screen" id="s3">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">OUR STORY</div>
+          <h2>我们的故事</h2>
+          <div class="line"></div>
+        </div>
+        <div class="timeline an" id="timeline"></div>
+      </div>
+    </section>
+
+    <!-- 4.婚纱相册 -->
+    <section class="screen" id="s4">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">GALLERY</div>
+          <h2>婚纱相册</h2>
+          <div class="line"></div>
+        </div>
+        <div class="album-grid an" id="albumGrid"></div>
+      </div>
+    </section>
+
+    <!-- 5.婚礼信息 -->
+    <section class="screen" id="s5">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">WEDDING INFO</div>
+          <h2>婚礼信息</h2>
+          <div class="line"></div>
+        </div>
+        <div class="info-card an">
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></div>
+            <div class="info-text"><div class="info-label">签到时间</div><div class="info-value"><span class="time">17:30</span> 宾客签到入场</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+            <div class="info-text"><div class="info-label">仪式时间</div><div class="info-value"><span class="time" id="ceremonyTime">18:00</span> 婚礼仪式正式开始</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></div>
+            <div class="info-text"><div class="info-label">婚宴时间</div><div class="info-value"><span class="time">18:30</span> 喜宴开席，共享美好</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+            <div class="info-text"><div class="info-label">婚礼地点</div><div class="info-value" id="infoLoc">婚礼地点</div></div>
+          </div>
+        </div>
+        <button class="gold-btn nav-btn an" id="navBtn">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"/></svg>
+          一键导航
+        </button>
+      </div>
+    </section>
+
+    <!-- 6.婚礼流程 -->
+    <section class="screen" id="s6">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">SCHEDULE</div>
+          <h2>婚礼流程</h2>
+          <div class="line"></div>
+        </div>
+        <div class="flow-list an">
+          <div class="flow-item"><div class="flow-time">17:30</div><div class="flow-name">宾客签到</div><div class="flow-desc">签到入场，合影留念</div></div>
+          <div class="flow-item"><div class="flow-time" id="flowCeremony">18:00</div><div class="flow-name">婚礼仪式</div><div class="flow-desc">新人入场，交换戒指</div></div>
+          <div class="flow-item"><div class="flow-time">18:30</div><div class="flow-name">喜宴开席</div><div class="flow-desc">举杯共庆，共享美食</div></div>
+          <div class="flow-item"><div class="flow-time">19:30</div><div class="flow-name">互动环节</div><div class="flow-desc">游戏抽奖，欢乐时光</div></div>
+          <div class="flow-item"><div class="flow-time">20:30</div><div class="flow-name">婚礼圆满</div><div class="flow-desc">送客礼，感谢莅临</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7.出席回执 -->
+    <section class="screen" id="s7">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">RSVP</div>
+          <h2>出席回执</h2>
+          <div class="line"></div>
+        </div>
+        <div id="rsvpForm" class="an">
+          <div class="form-group"><label>您的姓名</label><input type="text" id="rsvpName" placeholder="请输入您的姓名"></div>
+          <div class="form-row">
+            <div class="form-group"><label>出席人数</label><input type="number" id="rsvpCount" placeholder="人数" min="1" max="10"></div>
+            <div class="form-group"><label>联系电话</label><input type="tel" id="rsvpPhone" placeholder="手机号"></div>
+          </div>
+          <div class="form-group"><label>祝福语</label><textarea id="rsvpMsg" placeholder="写下您对新人的祝福..."></textarea></div>
+          <button class="submit-btn" id="rsvpSubmit">提交回执</button>
+        </div>
+        <div class="rsvp-success" id="rsvpSuccess">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+          <h3>回执已提交</h3>
+          <p>感谢您的祝福<br>我们期待与您相见</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.交通指引 -->
+    <section class="screen" id="s8">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">DIRECTIONS</div>
+          <h2>交通指引</h2>
+          <div class="line"></div>
+        </div>
+        <div class="transport-card an">
+          <div class="transport-icon" style="background:var(--icon-bg)"><svg viewBox="0 0 24 24" style="fill:var(--accent)"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg></div>
+          <div><h4>自驾前往</h4><p>导航搜索酒店名称，酒店内设免费停车场，宴会展位可领取停车券。</p></div>
+        </div>
+        <div class="transport-card an">
+          <div class="transport-icon" style="background:var(--icon-bg)"><svg viewBox="0 0 24 24" style="fill:var(--accent)"><path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h2.23l2-2H14l2 2h2v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-3.58-4-8-4zM7.5 17c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm3.5-6H6V6h5v5zm2 0V6h5v5h-5zm3.5 6c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+          <div><h4>地铁出行</h4><p>最近地铁站出站后步行约8-10分钟即达，或出站后换乘公交至酒店站。</p></div>
+        </div>
+        <div class="transport-card an">
+          <div class="transport-icon" style="background:var(--icon-bg)"><svg viewBox="0 0 24 24" style="fill:var(--accent)"><path d="M13 10h4l-2.5-3L13 10zm-2 0H7l2.5-3L11 10zm8.79 8.33C21 17.72 21 16 21 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C11.64 5.36 10 7.92 10 11v5s0 1.72-.79 2.33c-.38.29-.86.54-1.39.71-.06.26-.32.46-.6.46-.41 0-.75-.34-.75-.75 0-.07.01-.14.03-.21-.31-.09-.6-.22-.86-.39L5 19.5l1.5-1.5c-.16-.19-.3-.39-.41-.6L4 19l-2 2h16.5c2.2 0 3.5-1.5 3.5-3 0-1.07-.77-1.96-1.71-2.03.13.34.21.7.21 1.06v5c0 .41-.34.75-.75.75s-.75-.34-.75-.75c0-.28.02-.5.06-.72-.39-.06-.75-.2-1.06-.4z"/></svg></div>
+          <div><h4>停车服务</h4><p>酒店地下停车场共200余个车位，婚宴宾客凭邀请函可享免费停车4小时。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9.祝福墙 -->
+    <section class="screen" id="s9">
+      <div class="content">
+        <div class="section-title an">
+          <div class="en">BLESSINGS</div>
+          <h2>祝福墙</h2>
+          <div class="line"></div>
+        </div>
+        <div class="blessing-wall an" id="blessingWall"></div>
+        <div class="blessing-input an">
+          <input type="text" id="blessingInput" placeholder="写下您的祝福...">
+          <button id="blessingSend">发送</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10.结束页 -->
+    <section class="screen" id="s10">
+      <div class="art"></div>
+      <div class="content">
+        <div class="thanks an">感谢您的到来</div>
+        <div class="thanks-en an">THANK YOU FOR COMING</div>
+        <div class="names an"><span id="endGroom">新郎</span><span class="amp">&</span><span id="endBride">新娘</span></div>
+        <div class="date-loc an">
+          <div id="endDate">婚礼日期</div>
+          <div id="endLoc">婚礼地点</div>
+        </div>
+        <button class="gold-btn share-btn an" id="shareBtn">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+          分享给好友
+        </button>
+        <button class="gold-btn share-btn an" id="saveCardBtn" style="margin-bottom:8px">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          保存分享图
+        </button>
+        <button class="back-top an" id="backTop">
+          <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          回到顶部
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose">×</button>
+    <button class="nav prev" id="lbPrev">‹</button>
+    <img id="lbImg" src="" alt="">
+    <button class="nav next" id="lbNext">›</button>
+  </div>
+
+  <!-- 分享图弹窗 -->
+  <div class="share-card-modal" id="shareCardModal">
+    <img id="shareCardImg" src="" alt="分享封面图">
+    <div class="tips">长按图片保存到手机<br>发微信/朋友圈时直接发这张图</div>
+    <div class="actions">
+      <button class="save" id="saveCardDownload">💾 保存图片</button>
+      <button class="close-btn" id="closeCardModal">关闭</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 分享引导 -->
+  <div class="share-guide" id="shareGuide">
+    <div class="arrow">☝️</div>
+    <p>点击右上角 ···<br>发送给朋友 / 分享到朋友圈</p>
+  </div>
+</div></div>
+
+<script src="/js/qrcode.min.js"></script>
+<script src="/js/share-card.js"></script>
+<script src="/js/invite.js"></script>
+</body>
+</html>

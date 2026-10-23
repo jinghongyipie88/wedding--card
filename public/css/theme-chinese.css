@@ -1,0 +1,33 @@
+/* 主题：中式红 - 传统喜庆 */
+:root{
+  --bg:#FFF8F0;
+  --bg-2:#FDEEE0;
+  --ink:#3A1A1A;
+  --ink-soft:#7A4040;
+  --ink-dim:#A87070;
+  --accent:#C41E3A;
+  --accent-light:#E8A0A0;
+  --hand-color:#8B0000;
+  --line:rgba(196,30,58,.35);
+  --row-line:rgba(196,30,58,.12);
+  --card-bg:rgba(255,248,240,.85);
+  --input-bg:rgba(255,255,255,.9);
+  --icon-bg:#F5D0C0;
+  --btn-text:#FFF;
+  --petal:#F0B8B8;
+  --album-ph:linear-gradient(135deg,#F0B8B8,#E8A0A0);
+  --album-ph-text:rgba(255,255,255,.8);
+  --dot-off:rgba(196,30,58,.25);
+  --dot-glow:rgba(196,30,58,.4);
+  --glass:rgba(255,248,240,.7);
+  --cover-bg:url('/assets/hero-chinese.jpg');
+  --cover-scrim:linear-gradient(180deg,rgba(255,248,240,.25) 0%,rgba(255,248,240,.05) 40%,rgba(255,248,240,.55) 100%);
+  --screen-bg-1:linear-gradient(180deg,#FFF8F0 0%,#FDEEE0 100%);
+  --screen-bg-2:linear-gradient(180deg,#FDEEE0 0%,#FFF8F0 100%);
+  --stage-1:#FDF0E8;
+  --stage-2:#F5D8C8;
+  --frame:#FFF8F0;
+  --frame-2:#E8A0A0;
+  --halo-1:#E8A0A0;
+  --halo-2:#F5D0C0;
+}

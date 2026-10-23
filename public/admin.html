@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>管理后台 - 婚礼邀请函</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#F5F2ED;color:#3D3530;min-height:100vh}
+/* 登录 */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:#FFF;border-radius:16px;padding:40px 32px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.login-box h1{font-size:22px;text-align:center;margin-bottom:8px}
+.login-box p{font-size:13px;color:#8A8078;text-align:center;margin-bottom:28px}
+.login-box input{width:100%;padding:12px 16px;border:1px solid #E0D8CE;border-radius:8px;font-size:14px;margin-bottom:16px;outline:none}
+.login-box input:focus{border-color:#C9A96E}
+.login-box button{width:100%;padding:13px;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.login-box .err{color:#E53935;font-size:12px;text-align:center;margin-top:12px;display:none}
+/* 主界面 */
+.dashboard{display:none;max-width:960px;margin:0 auto;padding:20px 16px 40px}
+.dash-header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;margin-bottom:20px}
+.dash-header h1{font-size:20px}
+.dash-header .logout{font-size:13px;color:#8A8078;cursor:pointer;text-decoration:underline}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:#FFF;border-radius:12px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.stat-card .num{font-size:28px;font-weight:700;color:#C9A96E}
+.stat-card .label{font-size:12px;color:#8A8078;margin-top:4px}
+.section-title{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:"";width:3px;height:16px;background:#C9A96E;border-radius:2px}
+.invite-list{background:#FFF;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.invite-item{padding:16px 20px;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s}
+.invite-item:hover{background:#FAF8F5}
+.invite-item:last-child{border-bottom:none}
+.invite-info .names{font-size:15px;font-weight:600;margin-bottom:4px}
+.invite-info .meta{font-size:12px;color:#8A8078;display:flex;gap:16px}
+.invite-info .meta span{display:flex;align-items:center;gap:4px}
+.invite-actions{display:flex;gap:8px;align-items:center}
+.badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-views{background:#E3F2FD;color:#1976D2}
+.badge-rsvp{background:#E8F5E9;color:#388E3C}
+.btn-sm{padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:none}
+.btn-view{background:#F5F2ED;color:#6B5F55}
+.btn-del{background:#FFEBEE;color:#E53935}
+.btn-code{background:#E8F5E9;color:#388E3C}
+/* 顶部操作区 */
+.top-actions{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.top-actions .section-title{margin-bottom:0}
+.btn-create{background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(201,169,110,.35)}
+.btn-create:hover{opacity:.92}
+/* 创建结果 / 编辑码弹窗 */
+.code-result{background:#FAF8F5;border-radius:10px;padding:16px;margin-top:4px}
+.code-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #E8E0D5}
+.code-row:last-child{border-bottom:none}
+.code-row .k{font-size:12px;color:#8A8078;flex-shrink:0}
+.code-row .v{font-size:13px;color:#3D3530;word-break:break-all;text-align:right}
+.code-row .v b{font-size:15px;letter-spacing:.08em;color:#C9A96E}
+.btn-copy{background:#C9A96E;color:#FFF;border:none;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;flex-shrink:0}
+.btn-copy:active{opacity:.8}
+.big-link{display:block;margin-top:10px;font-size:13px;color:#C9A96E;word-break:break-all;text-decoration:none}
+.big-link:hover{text-decoration:underline}
+.create-hint{font-size:12px;color:#9A8E82;margin-top:12px;line-height:1.7}
+/* 回执详情弹窗 */
+.rsvp-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.r-head { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.r-name { font-weight: 600; }
+.r-time { font-size: 12px; color: #999; }
+.r-meta { font-size: 13px; color: #666; margin-bottom: 4px; }
+.r-msg { font-size: 13px; color: #888; background: #fafafa; border-radius: 6px; padding: 6px 8px; }
+.clear-rsvps-wrap { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #ddd; }
+.btn-clear { background: #e74c3c; color: #fff; border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; cursor: pointer; }
+.btn-clear:hover { background: #c0392b; }
+.clear-hint { font-size: 12px; color: #999; margin-top: 6px; }
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:#FFF;border-radius:16px;width:100%;max-width:560px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-header{padding:18px 20px;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:16px}
+.modal-header .close{font-size:22px;color:#8A8078;cursor:pointer;background:none;border:none}
+.modal-body{padding:16px 20px;overflow-y:auto;flex:1}
+.rsvp-item{background:#FAF8F5;border-radius:8px;padding:14px;margin-bottom:10px}
+.rsvp-item .r-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rsvp-item .r-name{font-size:14px;font-weight:600}
+.rsvp-item .r-time{font-size:11px;color:#8A8078}
+.rsvp-item .r-meta{font-size:12px;color:#6B5F55;margin-bottom:4px;display:flex;gap:16px}
+.rsvp-item .r-msg{font-size:13px;color:#3D3530;line-height:1.5}
+.empty{text-align:center;padding:40px;color:#8A8078;font-size:14px}
+.theme-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;background:#F5F2ED;color:#8A8078;margin-left:8px}
+</style>
+</head>
+<body>
+<!-- 登录 -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>婚礼邀请函管理</h1>
+    <p>请输入管理密码登录</p>
+    <input type="password" id="password" placeholder="管理密码" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">登 录</button>
+    <div class="err" id="loginErr">密码错误，请重试</div>
+  </div>
+</div>
+
+<!-- 主界面 -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <h1>邀请函管理后台</h1>
+    <span class="logout" onclick="logout()">退出登录</span>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">邀请函总数</div></div>
+    <div class="stat-card"><div class="num" id="statViews">0</div><div class="label">总浏览量</div></div>
+    <div class="stat-card"><div class="num" id="statRsvp">0</div><div class="label">总回执数</div></div>
+  </div>
+  <div class="top-actions">
+    <div class="section-title">邀请函列表</div>
+    <button class="btn-create" onclick="openCreateModal()">＋ 创建邀请函</button>
+  </div>
+  <div class="invite-list" id="inviteList"></div>
+</div>
+
+<!-- 创建邀请函弹窗 -->
+<div class="modal" id="createModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>创建邀请函（发给客户）</h3>
+      <button class="close" onclick="closeModalById('createModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:14px">
+        <label>客户选好的主题风格（信息由客户自己填）</label>
+        <select id="createTheme" style="width:100%;padding:11px 14px;border:1px solid #E0D8CE;border-radius:8px;font-size:14px;background:#FAF8F5">
+          <option value="champagne">香槟金（轻奢浪漫）</option>
+          <option value="chinese">中式红（传统喜庆）</option>
+          <option value="white">西式白（简约优雅）</option>
+          <option value="forest">森系绿（自然清新）</option>
+          <option value="vintage">复古棕（怀旧温暖）</option>
+        </select>
+      </div>
+      <button class="btn-create" style="width:100%" onclick="createInvite()">生成邀请函</button>
+      <div id="createResult" style="display:none"></div>
+      <p class="create-hint">点「生成」后，把下方「编辑链接」发给客户即可。客户点开自己填写信息、保存，无需经过您，全程不泄露任何个人信息。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 编辑码信息弹窗 -->
+<div class="modal" id="codeModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="codeModalTitle">邀请函编辑信息</h3>
+      <button class="close" onclick="closeModalById('codeModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="code-result" id="codeResult"></div>
+      <p class="create-hint">编辑链接只发给该客户本人；如需重新发送，直接复制上方链接即可，无需重新创建。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 回执详情弹窗 -->
+<div class="modal" id="rsvpModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">出席回执</h3>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+let adminPassword = '';
+
+function login() {
+  const pwd = document.getElementById('password').value;
+  if (!pwd) return;
+  adminPassword = pwd;
+  loadDashboard();
+}
+
+function logout() {
+  adminPassword = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('password').value = '';
+}
+
+async function loadDashboard() {
+  try {
+    const res = await fetch('/api/admin/invites', {
+      headers: { 'x-admin-password': adminPassword }
+    });
+    if (res.status === 401) {
+      document.getElementById('loginErr').style.display = 'block';
+      return;
+    }
+    const data = await res.json();
+    window._invites = data.invites; // 缓存，供回执弹窗查名字
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('loginErr').style.display = 'none';
+
+    // 统计
+    document.getElementById('statTotal').textContent = data.total;
+    document.getElementById('statViews').textContent = data.invites.reduce((s, i) => s + (i.views || 0), 0);
+    document.getElementById('statRsvp').textContent = data.invites.reduce((s, i) => s + (i.rsvpCount || 0), 0);
+
+    // 列表
+    const list = document.getElementById('inviteList');
+    if (data.invites.length === 0) {
+      list.innerHTML = '<div class="empty">暂无邀请函，去制作第一份吧</div>';
+      return;
+    }
+    const themeNames = {champagne:'香槟金',chinese:'中式红',white:'西式白',forest:'森系绿',vintage:'复古棕'};
+    list.innerHTML = data.invites.map(inv => {
+      const names = (inv.groom || inv.bride) ? `${esc(inv.groom || '未填')} & ${esc(inv.bride || '未填')}` : '未命名新人';
+      const dateTxt = inv.date ? formatDate(inv.date) : '日期未填写';
+      const locTxt = inv.location ? (inv.location.length > 20 ? esc(inv.location.slice(0,20))+'...' : esc(inv.location)) : '地点未填写';
+      return `
+      <div class="invite-item">
+        <div class="invite-info">
+          <div class="names">${names}<span class="theme-tag">${themeNames[inv.theme] || esc(inv.theme)}</span></div>
+          <div class="meta">
+            <span>📅 ${dateTxt}</span>
+            <span>📍 ${locTxt}</span>
+          </div>
+        </div>
+        <div class="invite-actions">
+          <span class="badge badge-views">👁 ${inv.views || 0}</span>
+          <span class="badge badge-rsvp">✉ ${inv.rsvpCount || 0}</span>
+          <button class="btn-sm btn-code" onclick="viewCode('${inv.id}')">编辑码</button>
+          <button class="btn-sm btn-view" onclick="viewRsvps('${inv.id}')">回执</button>
+          <button class="btn-sm btn-view" onclick="window.open('/invite/${inv.id}','_blank')">查看</button>
+          <button class="btn-sm btn-del" onclick="delInvite('${inv.id}')">删除</button>
+        </div>
+      </div>
+    `}).join('');
+  } catch (e) {
+    alert('加载失败：' + e.message);
+  }
+}
+
+async function viewRsvps(id) {
+  try {
+    const res = await fetch(`/api/invites/${id}/rsvps`, {
+      headers: { 'x-admin-password': adminPassword }
+    });
+    const data = await res.json();
+    const inv = (window._invites || []).find(i => i.id === id) || {};
+    document.getElementById('modalTitle').textContent = `${inv.groom || '新人'} & ${inv.bride || ''} - 出席回执（${data.total}人）`;
+    const body = document.getElementById('modalBody');
+    if (data.rsvps.length === 0) {
+      body.innerHTML = '<div class="empty">暂无回执记录</div>';
+    } else {
+      body.innerHTML = data.rsvps.map(r => `
+        <div class="rsvp-item">
+          <div class="r-head">
+            <span class="r-name">${esc(r.name)}</span>
+            <span class="r-time">${formatTime(r.createdAt)}</span>
+          </div>
+          <div class="r-meta">
+            <span>👥 ${r.count}人</span>
+            <span>📞 ${esc(r.phone)}</span>
+          </div>
+          ${r.message ? `<div class="r-msg">💌 ${esc(r.message)}</div>` : ''}
+        </div>
+      `).join('');
+      // 婚礼结束后可一键清理全部宾客信息（姓名/电话/留言）
+      body.innerHTML += `<div class="clear-rsvps-wrap">
+        <button class="btn-sm btn-clear" onclick="clearRsvps('${id}')">🗑 婚礼结束后一键清空全部宾客数据</button>
+        <div class="clear-hint">清空后不可恢复，仅保留邀请函本身，宾客的姓名、电话、留言将被彻底删除。</div>
+      </div>`;
+    }
+    document.getElementById('rsvpModal').classList.add('show');
+  } catch (e) {
+    alert('加载回执失败');
+  }
+}
+
+function closeModal() {
+  document.getElementById('rsvpModal').classList.remove('show');
+}
+function closeModalById(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+/* ── 打开创建弹窗 ── */
+function openCreateModal() {
+  document.getElementById('createResult').style.display = 'none';
+  document.getElementById('createModal').classList.add('show');
+}
+
+/* ── 创建邀请函（生成解锁码）── */
+async function createInvite() {
+  const theme = document.getElementById('createTheme').value;
+  const btn = event.target;
+  btn.textContent = '生成中...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/invites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+      body: JSON.stringify({ theme })
+    });
+    const data = await res.json();
+    if (data.id) {
+      const origin = window.location.origin;
+      document.getElementById('createResult').innerHTML = `
+        <div class="code-result" style="margin-top:16px">
+          <div class="code-row"><span class="k">邀请函编号</span><span class="v"><b>${esc(data.id)}</b></span></div>
+          <div class="code-row"><span class="k">编辑码</span><span class="v"><b>${esc(data.unlockCode)}</b></span></div>
+          <div class="code-row"><span class="k">编辑链接</span><span class="v">${origin}${data.editUrl}</span></div>
+          <button class="btn-copy" onclick="copyText('${origin}${data.editUrl}')">复制编辑链接</button>
+        </div>
+        <a class="big-link" href="${origin}${data.editUrl}" target="_blank">打开预览（可先看效果）</a>
+        <p class="create-hint" style="margin-top:8px">把「编辑链接」发到客户微信。客户点开 → 自己填姓名/日期/地点/照片 → 保存 → 生成专属邀请函。</p>`;
+      document.getElementById('createResult').style.display = 'block';
+      loadDashboard();
+    } else {
+      alert('创建失败：' + (data.error || '未知错误'));
+    }
+  } catch (e) {
+    alert('创建失败，请检查网络');
+  } finally {
+    btn.textContent = '生成邀请函';
+    btn.disabled = false;
+  }
+}
+
+/* ── 查看/复制某邀请函的编辑码 ── */
+function viewCode(id) {
+  const inv = (window._invites || []).find(i => i.id === id);
+  if (!inv) return;
+  const title = (inv.groom || inv.bride) ? `${inv.groom || '未填'} & ${inv.bride || '未填'}` : '未命名新人';
+  document.getElementById('codeModalTitle').textContent = `${title} - 编辑信息`;
+  const origin = window.location.origin;
+  document.getElementById('codeResult').innerHTML = `
+    <div class="code-row"><span class="k">邀请函编号</span><span class="v"><b>${esc(inv.id)}</b></span></div>
+    <div class="code-row"><span class="k">编辑码</span><span class="v"><b>${esc(inv.unlockCode || '（无）')}</b></span></div>
+    <div class="code-row"><span class="k">编辑链接</span><span class="v">${origin}${inv.editUrl || ''}</span></div>
+    <button class="btn-copy" onclick="copyText('${origin}${inv.editUrl || ''}')">复制编辑链接</button>
+    <a class="big-link" href="${origin}/invite/${inv.id}" target="_blank">打开邀请函（已发布效果）</a>`;
+  document.getElementById('codeModal').classList.add('show');
+}
+
+/* ── 复制文本 ── */
+function copyText(text) {
+  const done = btn => {
+    btn.textContent = '已复制';
+    setTimeout(() => btn.textContent = '复制编辑链接', 1800);
+  };
+  const btn = event.target;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => done(btn)).catch(() => fallbackCopyText(text, btn));
+  } else {
+    fallbackCopyText(text, btn);
+  }
+}
+function fallbackCopyText(text, btn) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(btn); } catch (e) { alert('复制失败，请手动选择链接复制'); }
+  ta.remove();
+}
+
+async function delInvite(id) {
+  if (!confirm('确定删除这份邀请函吗？删除后不可恢复。')) return;
+  try {
+    await fetch(`/api/admin/invites/${id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-password': adminPassword }
+    });
+    loadDashboard();
+  } catch (e) {
+    alert('删除失败');
+  }
+}
+
+// 婚礼结束后一键清空宾客数据（只删回执，保留邀请函）
+async function clearRsvps(id) {
+  if (!confirm('确定清空这份邀请函的全部宾客数据吗？\n（姓名、电话、留言将彻底删除，不可恢复）')) return;
+  if (!confirm('再次确认：婚礼结束后确实要清除所有宾客信息？')) return;
+  try {
+    const res = await fetch(`/api/admin/invites/${id}/rsvps`, {
+      method: 'DELETE',
+      headers: { 'x-admin-password': adminPassword }
+    });
+    const data = await res.json();
+    alert(data.cleared > 0 ? `已清空 ${data.cleared} 条宾客数据` : '当前无宾客数据');
+    closeModal();
+    loadDashboard();
+  } catch (e) {
+    alert('清空失败');
+  }
+}
+
+function formatDate(s) {
+  const d = new Date(s);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function formatTime(s) {
+  const d = new Date(s);
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// 点击弹窗外部关闭
+document.getElementById('rsvpModal').onclick = e => {
+  if (e.target.id === 'rsvpModal') closeModal();
+};
+['createModal','codeModal'].forEach(id => {
+  document.getElementById(id).onclick = e => {
+    if (e.target.id === id) closeModalById(id);
+  };
+});
+</script>
+</body>
+</html>

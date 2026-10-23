@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>婚礼邀请函 - 3分钟制作专属电子请柬</title>
+<meta name="description" content="浪漫优雅的婚礼电子邀请函，5套主题风格，在线编辑一键生成，支持出席回执、祝福墙、地图导航，让你的婚礼更有仪式感。">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#3D3530;background:#FAF8F5;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#FAF6F0 0%,#F3EDE3 50%,#EDE3D4 100%);padding:80px 0 100px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.15),transparent 70%)}
+.hero::after{content:"";position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(212,165,165,.12),transparent 70%)}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:680px;margin:0 auto}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(201,169,110,.15);color:#A88B4A;border-radius:20px;font-size:13px;margin-bottom:24px;letter-spacing:.05em}
+.hero h1{font-size:44px;font-weight:700;line-height:1.25;margin-bottom:18px;letter-spacing:-.02em}
+.hero h1 span{background:linear-gradient(135deg,#C9A96E,#B88888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:17px;color:#6B5F55;margin-bottom:36px;line-height:1.8}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;border-radius:10px;font-size:16px;font-weight:600;box-shadow:0 6px 20px rgba(201,169,110,.4);transition:transform .2s,box-shadow .2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,169,110,.5)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:#FFF;color:#6B5F55;border:1px solid #E0D8CE;border-radius:10px;font-size:16px;font-weight:600;transition:all .2s}
+.btn-secondary:hover{border-color:#C9A96E;color:#C9A96E}
+.hero-note{margin-top:20px;font-size:13px;color:#9A8E82}
+
+/* Section通用 */
+section{padding:72px 0}
+.section-head{text-align:center;margin-bottom:48px}
+.section-head .kicker{font-size:13px;color:#C9A96E;letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px}
+.section-head h2{font-size:32px;font-weight:700;margin-bottom:12px}
+.section-head p{font-size:15px;color:#8A8078;max-width:520px;margin:0 auto}
+
+/* 模板预览 */
+.templates{background:#FFF}
+.template-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.template-card{border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .25s,box-shadow .25s;cursor:pointer}
+.template-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.14)}
+.template-card img{width:100%;aspect-ratio:9/16;object-fit:cover;display:block}
+.template-card .info{padding:12px;text-align:center;background:#FAF8F5}
+.template-card .info h4{font-size:14px;font-weight:600}
+.template-card .info p{font-size:11px;color:#9A8E82;margin-top:2px}
+
+/* 功能特点 */
+.features{background:#FAF8F5}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:#FFF;border-radius:14px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .2s}
+.feature-card:hover{transform:translateY(-4px)}
+.feature-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(201,169,110,.15),rgba(212,165,165,.15));display:grid;place-items:center;margin-bottom:16px;font-size:24px}
+.feature-card h3{font-size:17px;font-weight:600;margin-bottom:8px}
+.feature-card p{font-size:14px;color:#8A8078;line-height:1.7}
+
+/* 使用流程 */
+.how-it-works{background:#FFF}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative}
+.step{text-align:center;position:relative}
+.step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;display:grid;place-items:center;font-size:20px;font-weight:700;margin:0 auto 16px;box-shadow:0 4px 12px rgba(201,169,110,.35)}
+.step h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.step p{font-size:14px;color:#8A8078;line-height:1.7}
+
+/* 价格 */
+.pricing{background:linear-gradient(180deg,#FAF8F5,#F3EDE3)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto}
+.price-card{background:#FFF;border-radius:16px;padding:32px 28px;box-shadow:0 4px 20px rgba(0,0,0,.08);position:relative;transition:transform .2s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border:2px solid #C9A96E;transform:scale(1.04)}
+.price-card.featured::before{content:"最受欢迎";position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;font-size:12px;border-radius:12px;font-weight:600}
+.price-card h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.price-card .price{font-size:36px;font-weight:700;color:#C9A96E;margin-bottom:4px}
+.price-card .price span{font-size:14px;color:#9A8E82;font-weight:400}
+.price-card .desc{font-size:13px;color:#8A8078;margin-bottom:20px}
+.price-card ul{list-style:none;margin-bottom:24px}
+.price-card li{font-size:14px;color:#6B5F55;padding:6px 0;display:flex;align-items:center;gap:8px}
+.price-card li::before{content:"✓";color:#C9A96E;font-weight:700}
+.price-card .btn{display:block;width:100%;padding:12px;text-align:center;border-radius:8px;font-size:14px;font-weight:600;transition:all .2s}
+.price-card .btn-outline{border:1px solid #E0D8CE;color:#6B5F55}
+.price-card .btn-outline:hover{border-color:#C9A96E;color:#C9A96E}
+.price-card .btn-fill{background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF}
+.price-card .btn-fill:hover{opacity:.9}
+
+/* CTA */
+.final-cta{background:linear-gradient(135deg,#3D3530,#5A4E42);padding:80px 0;text-align:center;color:#FFF}
+.final-cta h2{font-size:32px;font-weight:700;margin-bottom:14px}
+.final-cta p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:32px}
+.final-cta .btn-primary{background:linear-gradient(135deg,#E0CBA0,#C9A96E);color:#3D3530}
+
+/* Footer */
+footer{background:#2D2823;padding:32px 0;text-align:center;color:rgba(255,255,255,.4);font-size:13px}
+footer a{color:rgba(255,255,255,.5);margin:0 12px}
+footer a:hover{color:#C9A96E}
+
+/* 购买弹窗 */
+.buy-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:20px}
+.buy-modal.show{display:flex}
+.buy-box{background:#FFF;border-radius:16px;width:100%;max-width:400px;max-height:86vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.25)}
+.buy-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #F0EBE3}
+.buy-head h3{font-size:17px}
+.buy-head h3 span{color:#C9A96E}
+.buy-close{font-size:22px;color:#8A8078;cursor:pointer;background:none;border:none}
+.buy-body{padding:20px 22px}
+.pay-steps{margin-bottom:18px}
+.pay-step{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13px;color:#6B5F55;line-height:1.6}
+.ps-num{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#B8956A);color:#FFF;display:grid;place-items:center;font-size:11px;font-weight:700;margin-top:2px}
+.qr-wrap{background:#FAF8F5;border:1px solid #E0D8CE;border-radius:12px;padding:16px;text-align:center;margin-bottom:14px}
+.qr-img{max-width:220px;width:100%;height:auto;border-radius:8px;display:inline-block}
+.privacy-line{font-size:12px;color:#8D6E00;background:#FFF8E1;border-radius:8px;padding:10px 12px;line-height:1.6}
+
+/* 隐私说明区块 */
+.privacy-note{background:#FFF;padding:56px 0}
+.privacy-note .inner{max-width:820px;margin:0 auto;padding:0 24px}
+.privacy-note h2{font-size:22px;font-weight:700;text-align:center;margin-bottom:18px}
+.privacy-note p{font-size:14px;color:#6B5F55;line-height:1.9;margin-bottom:10px;text-align:center}
+
+/* 响应式 */
+@media(max-width:768px){
+  .hero h1{font-size:30px}
+  .hero p{font-size:15px}
+  .template-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .feature-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr;gap:24px}
+  .pricing-grid{grid-template-columns:1fr;gap:16px}
+  .price-card.featured{transform:none}
+  section{padding:48px 0}
+  .section-head h2{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="badge">✨ 无需下载 · 自己编辑 · 永久有效</div>
+      <h1>3分钟制作<br><span>专属婚礼电子邀请函</span></h1>
+      <p>浪漫优雅的设计风格，一键生成独立分享链接<br>支持出席回执、祝福墙、地图导航，让你的婚礼更有仪式感</p>
+      <div class="hero-cta">
+        <a href="#templates" class="btn-primary">查看模板预览 →</a>
+        <a href="#pricing" class="btn-secondary">查看购买方式</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 模板预览 -->
+<section class="templates" id="templates">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">TEMPLATES</div>
+      <h2>5套精选主题风格</h2>
+      <p>从轻奢浪漫到传统喜庆，总有一款适合你们的故事</p>
+    </div>
+    <div class="template-grid">
+      <div class="template-card" onclick="window.open('/invite/2230ad22?theme=champagne','_blank')">
+        <img src="/assets/hero-champagne.jpg" alt="香槟金">
+        <div class="info"><h4>香槟金</h4><p>轻奢浪漫</p></div>
+      </div>
+      <div class="template-card" onclick="window.open('/invite/2230ad22?theme=chinese','_blank')">
+        <img src="/assets/hero-chinese.jpg" alt="中式红">
+        <div class="info"><h4>中式红</h4><p>传统喜庆</p></div>
+      </div>
+      <div class="template-card" onclick="window.open('/invite/2230ad22?theme=white','_blank')">
+        <img src="/assets/hero-white.jpg" alt="西式白">
+        <div class="info"><h4>西式白</h4><p>简约优雅</p></div>
+      </div>
+      <div class="template-card" onclick="window.open('/invite/2230ad22?theme=forest','_blank')">
+        <img src="/assets/hero-forest.jpg" alt="森系绿">
+        <div class="info"><h4>森系绿</h4><p>自然清新</p></div>
+      </div>
+      <div class="template-card" onclick="window.open('/invite/2230ad22?theme=vintage','_blank')">
+        <img src="/assets/hero-vintage.jpg" alt="复古棕">
+        <div class="info"><h4>复古棕</h4><p>怀旧温暖</p></div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:#9A8E82;margin-top:14px">点击任意主题，可预览该风格的真实效果</p>
+  </div>
+</section>
+
+<!-- 功能特点 -->
+<section class="features">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">FEATURES</div>
+      <h2>不止是邀请函</h2>
+      <p>完整的婚礼邀请体验，从发出去到收回来，一应俱全</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">💌</div>
+        <h3>出席回执管理</h3>
+        <p>宾客在线填写出席人数和联系方式，后台实时统计，再也不用一个个打电话确认。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>在线祝福墙</h3>
+        <p>宾客可以留下祝福语，所有人可见，婚礼当天还可以投屏展示，氛围感拉满。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>一键地图导航</h3>
+        <p>自动识别手机系统，跳转高德/腾讯/苹果地图，宾客再也不用担心找不到路。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>照片自定义上传</h3>
+        <p>封面背景和相册照片都可以自由上传，自动压缩优化，打造独一无二的请柬。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏰</div>
+        <h3>浪漫倒计时</h3>
+        <p>实时显示距离婚礼的天时分秒，3D翻转动效，每一次打开都是期待。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>浏览数据统计</h3>
+        <p>后台查看邀请函浏览量，知道多少人打开过，精准掌握邀请覆盖情况。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 购买流程 -->
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">HOW IT WORKS</div>
+      <h2>简单三步，拥有专属请柬</h2>
+      <p>不需要设计基础，不需要技术背景，人人都能做出高级感请柬</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>扫码加微信</h3>
+        <p>选择方案后扫码添加客服微信，微信里付款，10分钟内人工开通</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>收到编辑链接</h3>
+        <p>微信收到专属「编辑链接＋编辑码」，点开即可编辑，不用把信息发给任何人</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>填好发给亲友</h3>
+        <p>填写新人姓名、时间地点、照片故事，保存后生成独立链接，微信转发给宾客</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 价格 -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">PRICING</div>
+      <h2>选择适合你的方案</h2>
+      <p>一次购买，永久使用；加微信付款后发送编辑链接，自己填好即发给亲友</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>体验款</h3>
+        <div class="price">¥9.9<span>/次</span></div>
+        <div class="desc">先做一份试试效果</div>
+        <ul>
+          <li>5套主题风格任选</li>
+          <li>新人姓名、日期、地点</li>
+          <li>独立链接分享</li>
+          <li>出席回执 + 祝福墙</li>
+        </ul>
+        <button class="btn btn-outline" onclick="openBuy('体验款 ¥9.9')">扫码购买</button>      </div>
+      <div class="price-card featured">
+        <h3>标准款</h3>
+        <div class="price">¥19.9<span>/次</span></div>
+        <div class="desc">大多数新人的选择</div>
+        <ul>
+          <li>体验款全部功能</li>
+          <li>照片上传（封面+相册）</li>
+          <li>爱情故事时间线</li>
+          <li>微信分享封面图</li>
+          <li>宾客回复实时统计</li>
+        </ul>
+        <button class="btn btn-fill" onclick="openBuy('标准款 ¥19.9')">扫码购买</button>
+      </div>
+      <div class="price-card">
+        <h3>定制款</h3>
+        <div class="price">¥39.9<span>/次</span></div>
+        <div class="desc">怕麻烦就选它</div>
+        <ul>
+          <li>标准款全部功能</li>
+          <li>人工协助填写</li>
+          <li>多次修改指导</li>
+          <li>优先开通服务</li>
+        </ul>
+        <button class="btn btn-outline" onclick="openBuy('定制款 ¥39.9')">扫码购买</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 隐私说明 -->
+<section class="privacy-note" id="privacy">
+  <div class="inner">
+    <h2>关于隐私，我们怎么保护您和宾客的信息</h2>
+    <p>您自己填写所有信息，不需要把姓名、婚期、地点发给任何人；填好后也只有您和您的亲友能看到。</p>
+    <p>宾客回复时留下的电话会被加密保存，只有您凭自己的管理密码能查看；婚礼结束后，您可以一键清空全部宾客数据。</p>
+  </div>
+</section>
+
+<!-- 最终CTA -->
+<section class="final-cta">
+  <div class="container">
+    <h2>让你们的婚礼，从一份美好的邀请开始</h2>
+    <p>先看模板效果，喜欢再买；加微信付款后自己编辑，10分钟生成专属请柬</p>
+    <a href="#templates" class="btn-primary">查看模板 →</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>© 2026 婚礼邀请函 · 让每一份邀请都充满仪式感</p>
+    <p style="margin-top:8px">
+      <a href="#templates">模板预览</a>
+      <a href="#pricing">购买方式</a>
+      <a href="#privacy">隐私说明</a>
+    </p>
+  </div>
+</footer>
+
+<!-- 购买弹窗 -->
+<div class="buy-modal" id="buyModal">
+  <div class="buy-box">
+    <div class="buy-head">
+      <h3>购买 <span id="buyPlan">标准款</span></h3>
+      <button class="buy-close" onclick="closeBuy()">×</button>
+    </div>
+    <div class="buy-body">
+      <div class="pay-steps">
+        <div class="pay-step"><span class="ps-num">1</span><span>扫码添加客服微信（添加时备注：<b id="buyRemark">婚礼邀请函</b>）</span></div>
+        <div class="pay-step"><span class="ps-num">2</span><span>微信里完成付款，确认开通</span></div>
+        <div class="pay-step"><span class="ps-num">3</span><span>10分钟内收到「编辑链接＋编辑码」，点开自己填好即完成</span></div>
+      </div>
+      <div class="qr-wrap">
+        <img class="qr-img" src="assets/qrcode-wechat-crop.png" alt="添加客服微信">
+      </div>
+      <p class="privacy-line">🔒 您自己填写全部信息，无需发给任何人；宾客电话加密保存，婚礼后可一键清空</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* 购买弹窗 */
+function openBuy(plan) {
+  document.getElementById('buyPlan').textContent = plan;
+  document.getElementById('buyRemark').textContent = '婚礼邀请函' + (plan ? '·' + plan : '');
+  document.getElementById('buyModal').classList.add('show');
+}
+function closeBuy() {
+  document.getElementById('buyModal').classList.remove('show');
+}
+document.getElementById('buyModal').onclick = e => {
+  if (e.target.id === 'buyModal') closeBuy();
+};
+</script>
+
+</body>
+</html>

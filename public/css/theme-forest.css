@@ -1,0 +1,33 @@
+/* 主题：森系绿 - 自然清新 */
+:root{
+  --bg:#F5F7F2;
+  --bg-2:#EAF0E5;
+  --ink:#2D3A2A;
+  --ink-soft:#5A6B55;
+  --ink-dim:#8A9A85;
+  --accent:#5B7553;
+  --accent-light:#A8C09A;
+  --hand-color:#8B6F47;
+  --line:rgba(91,117,83,.35);
+  --row-line:rgba(91,117,83,.12);
+  --card-bg:rgba(255,255,255,.75);
+  --input-bg:rgba(255,255,255,.85);
+  --icon-bg:#C8D8BE;
+  --btn-text:#FFF;
+  --petal:#D4E0C8;
+  --album-ph:linear-gradient(135deg,#D4E0C8,#C8D8BE);
+  --album-ph-text:rgba(255,255,255,.7);
+  --dot-off:rgba(91,117,83,.25);
+  --dot-glow:rgba(91,117,83,.4);
+  --glass:rgba(255,255,255,.6);
+  --cover-bg:url('/assets/hero-forest.jpg');
+  --cover-scrim:linear-gradient(180deg,rgba(245,247,242,.25) 0%,rgba(245,247,242,.05) 40%,rgba(245,247,242,.55) 100%);
+  --screen-bg-1:linear-gradient(180deg,#F5F7F2 0%,#EAF0E5 100%);
+  --screen-bg-2:linear-gradient(180deg,#EAF0E5 0%,#F5F7F2 100%);
+  --stage-1:#EDF2E8;
+  --stage-2:#D8E5D0;
+  --frame:#F5F7F2;
+  --frame-2:#A8C09A;
+  --halo-1:#A8C09A;
+  --halo-2:#D4E0C8;
+}

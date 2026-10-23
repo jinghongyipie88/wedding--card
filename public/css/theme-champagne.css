@@ -1,0 +1,33 @@
+/* 主题：香槟金 - 轻奢浪漫 */
+:root{
+  --bg:#FAF6F0;
+  --bg-2:#F3EDE3;
+  --ink:#3D3530;
+  --ink-soft:#6B5F55;
+  --ink-dim:#9A8E82;
+  --accent:#C9A96E;
+  --accent-light:#E0CBA0;
+  --hand-color:#B88888;
+  --line:rgba(201,169,110,.4);
+  --row-line:rgba(201,169,110,.15);
+  --card-bg:rgba(255,255,255,.7);
+  --input-bg:rgba(255,255,255,.8);
+  --icon-bg:#E0CBA0;
+  --btn-text:#FFF;
+  --petal:#E8CFCF;
+  --album-ph:linear-gradient(135deg,#E8CFCF,#E0CBA0);
+  --album-ph-text:rgba(255,255,255,.7);
+  --dot-off:rgba(201,169,110,.3);
+  --dot-glow:rgba(201,169,110,.5);
+  --glass:rgba(255,255,255,.6);
+  --cover-bg:url('/assets/hero-champagne.jpg');
+  --cover-scrim:linear-gradient(180deg,rgba(250,246,240,.3) 0%,rgba(250,246,240,.1) 40%,rgba(250,246,240,.6) 100%);
+  --screen-bg-1:linear-gradient(180deg,#FAF6F0 0%,#F3EDE3 100%);
+  --screen-bg-2:linear-gradient(180deg,#F3EDE3 0%,#FAF6F0 100%);
+  --stage-1:#F5EFE4;
+  --stage-2:#E8DFD0;
+  --frame:#FFF;
+  --frame-2:#E0CBA0;
+  --halo-1:#E0CBA0;
+  --halo-2:#E8CFCF;
+}
